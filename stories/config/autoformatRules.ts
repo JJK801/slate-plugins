@@ -9,31 +9,9 @@ import {
 } from '@udecode/slate-plugins';
 import { Editor, Transforms, Element } from 'slate';
 import { options } from './initialValues';
+import { toggleBlockquote } from '../../packages/slate-plugins/src/elements/blockquote/transforms'
 
 const preFormat = (editor: Editor) => unwrapList(editor, options);
-
-/**
- * Remove base node and insert a new one with a nestable structure
- */
-const nestableElement = (structure: Partial<Element>) => (editor: Editor) => {
-  Transforms.removeNodes(editor);
-  Transforms.insertNodes(
-    editor,
-    {
-      children: [
-        {
-          type: options.p.type,
-          children: [{ text: '' }]
-        }
-      ],
-      ...structure
-    },
-    { 
-      match: (n) => Editor.isBlock(editor, n),
-      select: true
-    }
-  );
-}
 
 export const autoformatRules: AutoformatRule[] = [
   {
@@ -90,9 +68,7 @@ export const autoformatRules: AutoformatRule[] = [
     type: options.blockquote.type,
     markup: ['>'],
     preFormat,
-    format: nestableElement({
-      type: options.blockquote.type
-    })
+    format: toggleBlockquote
   },
   {
     type: MARK_BOLD,
