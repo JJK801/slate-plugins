@@ -35,6 +35,7 @@ import {
   decorateSearchHighlight,
   EditablePlugins,
   ExitBreakPlugin,
+  getPreventDefaultHandler,
   HeadingPlugin,
   HeadingToolbar,
   HighlightPlugin,
@@ -107,6 +108,7 @@ import {
   optionsResetBlockTypes,
 } from '../config/initialValues';
 import { MENTIONABLES } from '../config/mentionables';
+import { toggleBlockquote } from '../../packages/slate-plugins/src/elements/blockquote/transforms'
 
 export default {
   title: 'Examples/Playground',
@@ -275,6 +277,7 @@ export const Plugins = () => {
           />
           <ToolbarElement
             type={options.blockquote.type}
+            onMouseDown={getPreventDefaultHandler(toggleBlockquote, editor, options)}
             icon={<FormatQuote />}
           />
           <ToolbarElement type={options.code_block.type} icon={<CodeBlock />} />
